@@ -182,14 +182,12 @@ export default (api: IApi) => {
 
   // antd config provider & app component
   api.onGenerateFiles(() => {
-    const withConfigProvider = !!api.config.antd.configProvider;
     const withAppConfig = appConfigAvailable && !!api.config.antd.appConfig;
 
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
-        configProvider:
-          withConfigProvider && JSON.stringify(api.config.antd.configProvider),
+        configProvider: JSON.stringify(api.config.antd.configProvider ?? {}),
         appConfig:
           appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
       },
@@ -200,9 +198,7 @@ export default (api: IApi) => {
       path: 'types.d.ts',
       content: Mustache.render(
         `
-{{#withConfigProvider}}
 import type { ConfigProviderProps } from 'antd/es/config-provider';
-{{/withConfigProvider}}
 {{#withAppConfig}}
 import type { AppConfig } from 'antd/es/app/context';
 {{/withAppConfig}}
@@ -211,15 +207,13 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
-type AntdConfig = Prettify<{}
-{{#withConfigProvider}}  & ConfigProviderProps{{/withConfigProvider}}
+type AntdConfig = Prettify<ConfigProviderProps
 {{#withAppConfig}}  & { appConfig: AppConfig }{{/withAppConfig}}
 >;
 
 export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
 `.trim(),
         {
-          withConfigProvider,
           withAppConfig,
         },
       ),

@@ -1,9 +1,7 @@
 import React from 'react';
 import {
   Modal,
-{{#configProvider}}
   ConfigProvider,
-{{/configProvider}}
 {{#appConfig}}
   App,
 {{/appConfig}}
@@ -21,9 +19,7 @@ export function rootContainer(rawContainer) {
     key: 'antd',
     type: ApplyPluginsType.modify,
     initialValue: {
-{{#configProvider}}
       ...{{{configProvider}}},
-{{/configProvider}}
 {{#appConfig}}
       appConfig: {{{appConfig}}},
 {{/appConfig}}
@@ -37,7 +33,6 @@ export function rootContainer(rawContainer) {
   container = <App {...finalAppConfig}>{container}</App>;
 {{/appConfig}}
 
-{{#configProvider}}
   if (finalConfigProvider.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfigProvider.prefixCls
@@ -57,7 +52,6 @@ export function rootContainer(rawContainer) {
     });
   };
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
-{{/configProvider}}
 
   return container;
 }
