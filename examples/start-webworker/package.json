@@ -3,7 +3,12 @@
   "private": true,
   "scripts": {
     "build": "max build",
+    "cypress:ci": "pnpm umi-scripts cypress",
     "dev": "max dev",
+    "e2e": "cypress run",
+    "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  cypress:ci",
+    "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status cypress:ci",
+    "e2e:dev:local": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status 'cypress open'",
     "postinstall": "max setup",
     "setup": "max setup",
     "start": "npm run dev"
@@ -14,6 +19,9 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.33",
-    "@types/react-dom": "^18.0.11"
+    "@types/react-dom": "^18.0.11",
+    "cross-env": "^7.0.3",
+    "cypress": "^12.0.0",
+    "start-server-and-test": "^1.15.2"
   }
 }
