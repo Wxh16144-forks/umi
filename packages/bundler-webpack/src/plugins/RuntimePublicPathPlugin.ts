@@ -1,6 +1,6 @@
 import type {
-  Compiler,
   Compilation,
+  Compiler,
   RuntimeModule,
 } from '@umijs/bundler-webpack/compiled/webpack';
 
@@ -24,7 +24,23 @@ export class RuntimePublicPathPlugin {
             )
               return;
             // @ts-ignore
-            module._cachedGeneratedCode = `__webpack_require__.p = (typeof globalThis !== 'undefined' ? globalThis : window).publicPath || '/';`;
+            module._cachedGeneratedCode = `__webpack_require__.p = (function(){
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis
+function __check(it) {
+  return it && it.Math === Math && it;
+};
+
+var __global =(
+  __check(typeof globalThis == 'object' && globalThis) ||
+  __check(typeof window == 'object' && window) ||
+  __check(typeof self == 'object' && self)
+);
+
+if(__global && __global.publicPath) return __global.publicPath;
+
+// fix: https://github.com/umijs/umi/issues/12781
+return ${JSON.stringify(compilation.outputOptions.publicPath || '/')};
+})();`;
           }
         },
       );
