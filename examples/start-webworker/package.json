@@ -1,0 +1,19 @@
+{
+  "name": "@example/start-webworker",
+  "private": true,
+  "scripts": {
+    "build": "max build",
+    "dev": "max dev",
+    "postinstall": "max setup",
+    "setup": "max setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/max": "workspace:*",
+    "antd": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11"
+  }
+}
